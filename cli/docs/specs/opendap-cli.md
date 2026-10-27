@@ -160,7 +160,7 @@ Built locally (no CI) for macOS arm64 and x86_64 and Linux arm64 and x86_64 (sta
 2. One binary, `opendap`, with external `opendap-<tool>` plugins for its own audience; maintainer tools stay in the toolkit (amended by RFC 0008).
 3. Every destructive operation needs an explicit target, even when only one device is present.
 4. v0 has no dedicated device-side agent: SSH and standard tools on the device.
-5. No Apple Developer ID for now; revisit for browser downloads, a `.pkg` or a Homebrew cask.
+5. No Apple Developer ID (open item CLI-OI-1).
 6. Packaging with `dist` in local mode.
 
 ## Appendix A. Shared conventions
@@ -328,3 +328,7 @@ Where §7 decides differently, §7 applies.
 - Deprecations: a stderr warning plus a `warnings:[{code:"deprecated.flag",…}]` entry in the JSON, kept for at least one minor release. Deprecated commands then **disappear** from help, search and schema (the `cf` rule) but keep running until the next major.
 - Toolkit tools share the kit crate version. A tool that finds an incompatible `opendap-<tool>` plugin warns from `doctor`.
 - **Telemetry:** none by default. If it is ever added, it is opt-in (`opendap cli telemetry enable`), respects `DO_NOT_TRACK=1`, documents exactly what it sends, and offers a `status` command. Neither the CLI nor the installer phones home. The only network call is the optional, user-enabled update check.
+
+## Open items
+
+- **CLI-OI-1** An Apple Developer ID, revisited for browser downloads, a `.pkg` or a Homebrew cask (§7 item 5).
