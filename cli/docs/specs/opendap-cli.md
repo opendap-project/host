@@ -154,7 +154,7 @@ The emulator is run by virtual-devices' `odap-vdev`; the CLI targets its devices
 
 Built locally (no CI) for macOS arm64 and x86_64 and Linux arm64 and x86_64 (static musl). Packaged with `dist` in local mode, signed with minisign, and published as an immutable GitHub release (draft, upload, publish) with `gh`, by the maintainers.
 
-## 7. Decisions (2026-10-22)
+## 7. Decisions
 
 1. Piped stdout defaults to JSON (agent-first, like `cf`); humans pass `-o plain` for greppable text.
 2. One binary, `opendap`, with external `opendap-<tool>` plugins for its own audience; maintainer tools stay in the toolkit (amended by RFC 0008).
