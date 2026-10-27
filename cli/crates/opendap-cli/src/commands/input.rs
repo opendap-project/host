@@ -10,16 +10,9 @@ pub fn run(ctx: &Ctx, cmd: InputCmd) -> Result<u8, CliError> {
     let InputCmd::Send { event } = cmd;
     let (vm, target) = resolve_target(&LocalVms, ctx.target.as_ref(), Need::Qmp)?;
     let event = match event {
-        InputEvent::Key { role, hold_ms } => opendap_model::InputEvent::Key {
-            role: opendap_model::Role(role),
-            hold_ms,
-        },
-        InputEvent::KeyDown { role } => opendap_model::InputEvent::KeyDown {
-            role: opendap_model::Role(role),
-        },
-        InputEvent::KeyUp { role } => opendap_model::InputEvent::KeyUp {
-            role: opendap_model::Role(role),
-        },
+        InputEvent::Key { role, hold_ms } => opendap_model::InputEvent::Key { role, hold_ms },
+        InputEvent::KeyDown { role } => opendap_model::InputEvent::KeyDown { role },
+        InputEvent::KeyUp { role } => opendap_model::InputEvent::KeyUp { role },
         InputEvent::Keyboard { key, down, up } => {
             // --down or --up: that half; neither: a press, down now and up as the event sent.
             if !down && !up && !ctx.dry_run {

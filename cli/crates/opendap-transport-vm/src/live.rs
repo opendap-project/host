@@ -189,15 +189,12 @@ mod tests {
         let sock = dir.join("qmp.sock");
         let _ = std::fs::remove_file(&sock);
         let srv = server(&sock);
-        let keys = LiveKeys::new(&sock, vec![(Role::from("main"), "p".into())]);
-        let main = Role::from("main");
-        keys.send(&InputEvent::KeyDown { role: main.clone() })
-            .unwrap();
+        let keys = LiveKeys::new(&sock, vec![(Role::Main, "p".into())]);
+        let main = Role::Main;
+        keys.send(&InputEvent::KeyDown { role: main }).unwrap();
         keys.send(&InputEvent::KeyUp { role: main }).unwrap();
         let err = keys
-            .send(&InputEvent::KeyDown {
-                role: Role::from("dial"),
-            })
+            .send(&InputEvent::KeyDown { role: Role::Back })
             .unwrap_err();
         assert_eq!(err.code.code, "input.invalid");
         drop(keys);

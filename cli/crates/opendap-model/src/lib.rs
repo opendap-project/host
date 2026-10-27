@@ -19,7 +19,7 @@ pub use error::{Error, ErrorBody, ErrorCode, ErrorDocument, Fix};
 pub use exec::ExecResult;
 pub use finding::{DoctorReport, Finding, Status, Summary};
 pub use hardware::{Attachment, HardwareChange, HardwareChanged, HardwareState, LIGHT_MAX_LUX};
-pub use input::{InputEvent, InputSent, Role};
+pub use input::{InputEvent, InputSent, Role, UnknownRole};
 pub use power::{BootMode, PowerAction, PowerDone};
 pub use screen::ScreenCapture;
 pub use vm::{Endpoints, ImageInfo, VmInfo, VmState};

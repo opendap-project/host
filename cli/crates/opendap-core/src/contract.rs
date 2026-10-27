@@ -90,19 +90,12 @@ pub fn screen_source<S: ScreenSource>(s: &S, path: &str) {
 
 /// [`InputSink`]: every event can be described. Sends nothing.
 pub fn input_sink<S: InputSink>(s: &S) {
-    for role in Role::COMMON {
-        let d = s.describe(&InputEvent::Key {
-            role: Role::from(role),
-            hold_ms: 100,
-        });
+    for role in Role::ALL {
+        let d = s.describe(&InputEvent::Key { role, hold_ms: 100 });
         assert!(!d.is_empty(), "{role}");
     }
-    for role in Role::COMMON {
-        let role = Role::from(role);
-        assert!(
-            !s.describe(&InputEvent::KeyDown { role: role.clone() })
-                .is_empty()
-        );
+    for role in Role::ALL {
+        assert!(!s.describe(&InputEvent::KeyDown { role }).is_empty());
         assert!(!s.describe(&InputEvent::KeyUp { role }).is_empty());
     }
     assert!(

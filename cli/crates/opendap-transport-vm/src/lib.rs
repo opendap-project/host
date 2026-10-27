@@ -549,7 +549,7 @@ mod tests {
         let (_t, vm) = checkout("input");
         contract::input_sink(&vm);
         let key = InputEvent::Key {
-            role: Role::from("volume-up"),
+            role: Role::VolumeUp,
             hold_ms: 100,
         };
         assert_eq!(
@@ -581,12 +581,7 @@ mod tests {
             "odap-vdev usb plug storage"
         );
         assert_eq!(
-            InputSink::describe(
-                &vm,
-                &InputEvent::KeyDown {
-                    role: Role::from("main")
-                }
-            ),
+            InputSink::describe(&vm, &InputEvent::KeyDown { role: Role::Main }),
             "odap-vdev input key main down"
         );
     }

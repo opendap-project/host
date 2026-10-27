@@ -239,8 +239,10 @@ pub enum InputCmd {
 pub enum InputEvent {
     /// Press a control by its role
     Key {
-        /// The control's role on the device (the T1: action, volume-up, volume-down, main)
-        role: String,
+        /// The control's role (action, volume-up, volume-down, main, back, select, menu; a device
+        /// has some of them: the T1 the first four)
+        #[arg(value_parser = parse_role)]
+        role: opendap_model::Role,
         /// How long the control stays down, in milliseconds
         #[arg(long, value_name = "MS", default_value_t = 100,
               value_parser = clap::value_parser!(u64).range(1..=60_000))]
@@ -249,12 +251,14 @@ pub enum InputEvent {
     /// Put a control down and leave it there (release it with key-up)
     KeyDown {
         /// The control's role on the device
-        role: String,
+        #[arg(value_parser = parse_role)]
+        role: opendap_model::Role,
     },
     /// Release a control put down with key-down
     KeyUp {
         /// The control's role on the device
-        role: String,
+        #[arg(value_parser = parse_role)]
+        role: opendap_model::Role,
     },
     /// A key of a keyboard attached to the device, by its Linux name (left, right, enter…): it
     /// reaches the activity as a keyboard's key, not as a control
@@ -275,6 +279,12 @@ pub enum InputEvent {
         /// Vertical pixel
         y: u32,
     },
+}
+
+/// A role by its name; an unknown one is refused with the roles there are.
+pub fn parse_role(s: &str) -> Result<opendap_model::Role, String> {
+    s.parse()
+        .map_err(|e: opendap_model::UnknownRole| e.to_string())
 }
 
 /// Seconds from `90`, `90s` or `3m`.

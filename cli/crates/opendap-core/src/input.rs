@@ -37,7 +37,7 @@ mod tests {
             name: "default".into(),
         };
         let key = InputEvent::Key {
-            role: Role::from("volume-up"),
+            role: Role::VolumeUp,
             hold_ms: 100,
         };
         assert!(matches!(
