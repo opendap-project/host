@@ -1,0 +1,69 @@
+schema = "opendap.requirements/v1"
+
+[[block]]
+markdown = "# CLI requirements\n\nRequirements for the `opendap` command-line tool, for advanced users and package developers (RFC 0008). The IDs keep the `TK` prefix of the repository's toolkit origin; they are never renumbered. TK-001, TK-009, TK-010 and TK-011 also apply to every toolkit repository.\n"
+
+[[block]]
+[[block.requirement]]
+id = "TK-001"
+text = "The toolkit runs on the developer host and is not shipped in Blackbird OS."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-002"
+text = "The T1 shall have its own ADB-style command-line tool covering everything an advanced user may want to do with the device."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-003"
+text = "The CLI command shall be `opendap`, with the aliases `dap` and `odap` installed only when those names are free on the host."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-004"
+text = "The CLI shall be a single Rust binary, portable or built per operating system."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-005"
+text = "The CLI shall install and uninstall through a `curl … | sh` script that detects the environment and selects the right binary."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-006"
+text = "The install script shall install the latest version by default and allow pinning a specific version."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-007"
+text = "The install script shall support the usual options: uninstall, verbose output and non-interactive mode, among others."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-008"
+text = "The CLI shall include a `doctor` command that checks its environment."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-009"
+text = "Every toolkit tool shall be agentic-first and human-friendly, and all of them shall share concepts, conventions and one domain model."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-010"
+text = "Toolkit tools and development in general shall officially support only UNIX / POSIX systems."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-011"
+text = "Toolkit tools shall be tested on macOS only."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "TK-018"
+text = "In a debug mode, the CLI shall show what a virtual device cannot emulate (for example the status LED and haptic feedback) as the device's software drives it, so it can be developed and tested without hardware."
+priority = "must"
+status = "confirmed"
+
+[[block]]
+markdown = "\n## Context\n\n- TK-018: for what the virtual T1 cannot emulate, such as the status LED or haptic feedback, the CLI in debug mode and the toolkit take over. The virtual board's adapters for those classes publish their state, and the CLI shows it to package developers using the emulator (virtual-devices VD-002, VD-006, [spec](https://github.com/opendap-project/virtual-devices/blob/main/docs/specs/virtual-devices.md)).\n\n- TK-002: ADB (Android Debug Bridge) is the reference for scope: shell, file transfer, installing and removing software, logs, port forwarding, screenshots and input, rebooting into recovery or flashing modes. The command set is not defined yet.\n- TK-009: references for CLI design suggested by the maintainers: Cloudflare's new `cf` CLI and Forge.\n"
