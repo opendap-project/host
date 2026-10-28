@@ -46,17 +46,17 @@ repos:
         entry: cargo clippy --workspace --all-targets -q -- -D warnings
         language: system
         pass_filenames: false
-        types: [rust]
+        types_or: [rust, cargo, cargo-lock]
         stages: [pre-push]
-        files: ^(cli|crates)/
+        files: ^((cli|crates)/|Cargo\.(toml|lock)$)
       - id: cargo-test
         name: cargo test (before push)
         entry: cargo test --workspace -q
         language: system
         pass_filenames: false
-        types: [rust]
+        types_or: [rust, cargo, cargo-lock]
         stages: [pre-push]
-        files: ^(cli|crates)/
+        files: ^((cli|crates)/|Cargo\.(toml|lock)$)
   # desktop/
   - repo: local
     hooks:
