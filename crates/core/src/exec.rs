@@ -1,7 +1,7 @@
 //! Running a command on a device.
 
-use opendap_model::error as codes;
-use opendap_model::{Error, ExecResult, Target};
+use opendap_host_model::error as codes;
+use opendap_host_model::{Error, ExecResult, Target};
 
 use crate::Outcome;
 use crate::ports::{DeviceTransport, Exit, VmProvider};

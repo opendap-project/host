@@ -6,9 +6,9 @@ use std::ops::Deref;
 use std::rc::Rc;
 use std::time::Duration;
 
-use opendap_model::error as codes;
-use opendap_model::vm::DEFAULT_NAME;
-use opendap_model::{
+use opendap_host_model::error as codes;
+use opendap_host_model::vm::DEFAULT_NAME;
+use opendap_host_model::{
     Attachment, Endpoints, Error, Finding, HardwareChange, HardwareState, ImageInfo, InputEvent,
     Status, Transport, VmInfo,
 };
@@ -350,7 +350,7 @@ pub struct FakeProbe(pub Vec<Finding>);
 
 impl FakeProbe {
     pub fn one(id: &str, status: Status) -> Self {
-        let fix = (status == Status::Error).then(|| opendap_model::Fix::describe("fix it"));
+        let fix = (status == Status::Error).then(|| opendap_host_model::Fix::describe("fix it"));
         FakeProbe(vec![Finding {
             id: id.into(),
             status,

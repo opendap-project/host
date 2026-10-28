@@ -1,10 +1,10 @@
 //! `opendap schema`: command metadata merged with the clap tree.
 
 use clap::CommandFactory;
-use opendap_cli_kit::meta::{Category, CommandMeta};
-use opendap_cli_kit::output::table;
-use opendap_cli_kit::{CliError, OutputMode};
-use opendap_model::error as codes;
+use opendap_host_command::meta::{Category, CommandMeta};
+use opendap_host_command::output::table;
+use opendap_host_command::{CliError, OutputMode};
+use opendap_host_model::error as codes;
 use serde::Serialize;
 
 use super::{Ctx, Doc};

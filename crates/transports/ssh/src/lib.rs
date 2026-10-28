@@ -1,5 +1,5 @@
 //! SSH adapter of the OpenDAP toolkit: implements
-//! [`opendap_core::DeviceTransport`] over an `ssh` command line.
+//! [`opendap_host_core::DeviceTransport`] over an `ssh` command line.
 //!
 //! The adapter does not choose the key, port or user: it is given a factory
 //! for the base command (for the virtual T1, `dap-qemu.sh ssh`, which ends
@@ -8,9 +8,9 @@
 
 use std::process::{Command, Stdio};
 
-use opendap_core::{Captured, DeviceTransport, Exit};
-use opendap_model::error as codes;
-use opendap_model::{Error, Transport};
+use opendap_host_core::{Captured, DeviceTransport, Exit};
+use opendap_host_model::error as codes;
+use opendap_host_model::{Error, Transport};
 
 /// ssh's own exit status for connection and authentication failures.
 pub const SSH_FAILURE: i32 = 255;
@@ -78,7 +78,7 @@ fn spawn_error(e: std::io::Error) -> Error {
 
 impl<F: Fn() -> Command> DeviceTransport for SshExec<F> {
     fn ensure_available(&self) -> Result<(), Error> {
-        opendap_host::require_tool("ssh", "reaches the device").map(|_| ())
+        opendap_host_platform::require_tool("ssh", "reaches the device").map(|_| ())
     }
 
     fn describe(&self, target: &Transport, argv: &[String]) -> String {
@@ -111,7 +111,7 @@ impl<F: Fn() -> Command> DeviceTransport for SshExec<F> {
 
 #[cfg(test)]
 mod tests {
-    use opendap_core::contract;
+    use opendap_host_core::contract;
 
     use super::*;
 

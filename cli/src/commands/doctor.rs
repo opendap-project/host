@@ -1,10 +1,10 @@
 //! `opendap doctor`: host checks, each with a status and a fix.
 
-use opendap_cli_kit::CliError;
-use opendap_core::HostProbe;
-use opendap_host::{HostPlatform, HostTools, Qemu};
-use opendap_model::{DoctorReport, Status};
-use opendap_transport_vm::CheckoutProbe;
+use opendap_host_command::CliError;
+use opendap_host_core::HostProbe;
+use opendap_host_model::{DoctorReport, Status};
+use opendap_host_platform::{HostPlatform, HostTools, Qemu};
+use opendap_host_transports_emulator::CheckoutProbe;
 
 use super::Ctx;
 
@@ -40,7 +40,7 @@ fn human(r: &DoctorReport) -> String {
 
 pub fn run(ctx: &Ctx) -> Result<u8, CliError> {
     let probes: [&dyn HostProbe; 4] = [&HostPlatform, &HostTools, &Qemu, &CheckoutProbe];
-    let report = opendap_core::doctor::run(&probes);
+    let report = opendap_host_core::doctor::run(&probes);
     ctx.out.emit(&report, || human(&report));
     Ok(if report.ok { 0 } else { 1 })
 }

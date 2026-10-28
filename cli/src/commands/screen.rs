@@ -1,9 +1,9 @@
 use std::path::PathBuf;
 
-use opendap_cli_kit::CliError;
-use opendap_core::{Need, Outcome, resolve_target};
-use opendap_model::error as codes;
-use opendap_transport_vm::LocalVms;
+use opendap_host_command::CliError;
+use opendap_host_core::{Need, Outcome, resolve_target};
+use opendap_host_model::error as codes;
+use opendap_host_transports_emulator::LocalVms;
 
 use super::{Ctx, Doc, emit_plan};
 use crate::cli::ScreenCmd;
@@ -36,7 +36,7 @@ pub fn run(ctx: &Ctx, cmd: ScreenCmd) -> Result<u8, CliError> {
         ));
     }
     let path = path.display().to_string();
-    let doc = match opendap_core::screen::capture(&vm, target, &path, ctx.dry_run)? {
+    let doc = match opendap_host_core::screen::capture(&vm, target, &path, ctx.dry_run)? {
         Outcome::Plan(plan) => return emit_plan(ctx, "opendap.screen_capture/v1", plan),
         Outcome::Done(doc) => doc,
     };

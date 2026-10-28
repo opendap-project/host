@@ -10,8 +10,8 @@ mod screen;
 mod version;
 mod vm;
 
-use opendap_cli_kit::{CliError, Output};
-use opendap_model::Target;
+use opendap_host_command::{CliError, Output};
+use opendap_host_model::Target;
 use serde::Serialize;
 
 use crate::cli::Command;

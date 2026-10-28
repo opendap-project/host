@@ -9,7 +9,7 @@ OpenDAP's adb: the tool for what an advanced user, a package developer or an age
 ## 1. Principles
 
 - **Agentic-first, human-friendly.** Every command works without a TTY, has JSON output, a `--dry-run`, stable error codes with a hint and a fix, and machine-readable help. Humans get readable tables, colour and confirmations.
-- **One domain model.** Device, target, transport, image, capability, chip, job and finding are shared types (crate `opendap-model`, versioned JSON schemas `opendap.<kind>/v1`). Help, schemas, MCP tools, docs and the conformance test are generated from command metadata, following Cloudflare Forge.
+- **One domain model.** Device, target, transport, image, capability, chip, job and finding are shared types (crate `opendap-host-model`, versioned JSON schemas `opendap.<kind>/v1`). Help, schemas, MCP tools, docs and the conformance test are generated from command metadata, following Cloudflare Forge.
 - **Standard and trick-less.** SSH, USB, rockusb, QMP, journald, systemd and RAUC underneath. No proprietary daemon is required in v0.
 - **UNIX / POSIX only, tested on macOS** (TK-010, TK-011).
 
@@ -27,7 +27,7 @@ The full conventions are in [Appendix A](#appendix-a-shared-conventions): gramma
 ## 3. Architecture
 
 - **One binary, user-side plugins.** `opendap` is a single Rust binary. Extensions for its own audience (for example a HAT's user tools) ship as `opendap-<tool>` binaries and run as external subcommands (the cargo and git pattern). Maintainer tooling is not a plugin: it lives in the toolkit repositories as its own tools (`odapkit image`, `odap-fab`…).
-- **Crates:** `opendap-model` (types and schemas), `opendap-cli-kit` (flags, output, errors, targets, config, logging, agent detection, help, schema, MCP, `doctor` framework, self-update), and one crate per binary. Use cases live in `opendap-core` and its adapter crates, layered as the [Rust crate architecture](https://github.com/opendap-project/blackbird/blob/main/system/docs/specs/rust-crate-architecture.md) sets out.
+- **Crates:** `opendap-host-model` (types and schemas), `opendap-host-command` (flags, output, errors, targets, config, logging, agent detection, help, schema, MCP, `doctor` framework, self-update), and one crate per binary. Use cases live in `opendap-host-core` and its adapter crates, layered as the [Rust crate architecture](https://github.com/opendap-project/blackbird/blob/main/system/docs/specs/rust-crate-architecture.md) sets out.
 - **Transports in v0:**
   - SSH, over the network or over USB networking from the main USB-C in gadget mode.
   - Serial console, over the same USB-C path (BRD-039).

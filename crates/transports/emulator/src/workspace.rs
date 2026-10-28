@@ -5,8 +5,8 @@
 
 use std::path::{Path, PathBuf};
 
-use opendap_model::Error;
-use opendap_model::error as codes;
+use opendap_host_model::Error;
+use opendap_host_model::error as codes;
 
 /// Environment variable that points at a virtual-devices checkout.
 pub const VD_DIR_VAR: &str = "ODAP_VIRTUAL_DEVICES_DIR";

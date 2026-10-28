@@ -1,7 +1,7 @@
 //! `opendap`: the command-line tool for the T1 and Blackbird OS.
 //!
-//! Interface layer: parses arguments, wires the adapters into `opendap-core`
-//! and renders the results through `opendap-cli-kit`.
+//! Interface layer: parses arguments, wires the adapters into `opendap-host-core`
+//! and renders the results through `opendap-host-command`.
 
 mod cli;
 mod commands;
@@ -12,9 +12,9 @@ use std::process::ExitCode;
 
 use clap::Parser;
 use clap::error::ErrorKind;
-use opendap_cli_kit::env::{Tty, agent_detected, interactive_allowed};
-use opendap_cli_kit::{CliError, Output, OutputMode};
-use opendap_model::error as codes;
+use opendap_host_command::env::{Tty, agent_detected, interactive_allowed};
+use opendap_host_command::{CliError, Output, OutputMode};
+use opendap_host_model::error as codes;
 
 use crate::cli::Cli;
 use crate::commands::Ctx;

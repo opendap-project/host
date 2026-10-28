@@ -1,5 +1,5 @@
 [package]
-name = "opendap-core"
+name = "opendap-host-core"
 description = "Application core of the opendap CLI (and OpenDAP Desktop): use cases written against ports (traits) that adapter crates implement"
 license = "MPL-2.0"
 version.workspace = true
@@ -12,5 +12,5 @@ publish.workspace = true
 contract = []
 
 [dependencies]
-opendap-model.workspace = true
+opendap-host-model.workspace = true
 serde_json.workspace = true

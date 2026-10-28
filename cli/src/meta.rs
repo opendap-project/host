@@ -1,7 +1,7 @@
 //! Command metadata, in one place. `opendap schema` merges it with the clap
 //! tree; the tests below keep the two in sync.
 
-use opendap_cli_kit::meta::{Category, CommandMeta};
+use opendap_host_command::meta::{Category, CommandMeta};
 
 const VM_BACKEND: &[&str] = &["workspace.not_found", "host.io"];
 
@@ -433,13 +433,13 @@ mod tests {
             assert!(m.examples.len() >= 2, "`{}` needs two examples", m.path);
             assert!(m.output_schema.starts_with("opendap.") && m.output_schema.ends_with("/v1"));
             assert!(
-                opendap_model::SCHEMAS.contains(&m.output_schema),
+                opendap_host_model::SCHEMAS.contains(&m.output_schema),
                 "{}",
                 m.output_schema
             );
             for code in m.errors {
                 assert!(
-                    opendap_model::error::lookup(code).is_some(),
+                    opendap_host_model::error::lookup(code).is_some(),
                     "`{}`: unknown code {code}",
                     m.path
                 );

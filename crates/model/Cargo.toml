@@ -1,5 +1,5 @@
 [package]
-name = "opendap-model"
+name = "opendap-host-model"
 description = "Shared domain types of the opendap CLI and OpenDAP Desktop: devices, targets, virtual device instances, findings, errors as data"
 license = "MPL-2.0"
 version.workspace = true

@@ -2,9 +2,9 @@
 
 use std::time::Duration;
 
-use opendap_model::error as codes;
-use opendap_model::vm::DEFAULT_NAME;
-use opendap_model::{Error, VmInfo, VmState};
+use opendap_host_model::error as codes;
+use opendap_host_model::vm::DEFAULT_NAME;
+use opendap_host_model::{Error, VmInfo, VmState};
 
 use crate::Outcome;
 use crate::ports::{Clock, VmBackend, VmProvider};

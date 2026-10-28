@@ -1,8 +1,8 @@
-use opendap_cli_kit::CliError;
-use opendap_core::Outcome;
-use opendap_core::exec::{ExecDone, ExecOptions, exec};
-use opendap_transport_ssh::SshExec;
-use opendap_transport_vm::{LocalVms, SSH_LAUNCHER};
+use opendap_host_command::CliError;
+use opendap_host_core::Outcome;
+use opendap_host_core::exec::{ExecDone, ExecOptions, exec};
+use opendap_host_transports_emulator::{LocalVms, SSH_LAUNCHER};
+use opendap_host_transports_ssh::SshExec;
 
 use super::{Ctx, Doc, emit_plan};
 

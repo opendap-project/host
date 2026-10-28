@@ -1,11 +1,11 @@
 //! The error every command returns, rendered as the `opendap.error/v1`
 //! envelope on stdout (JSON modes) and as text on stderr (always).
 //!
-//! The error itself is domain data ([`opendap_model::Error`]); this module
+//! The error itself is domain data ([`opendap_host_model::Error`]); this module
 //! only adds its human rendering.
 
 /// The error every command returns.
-pub use opendap_model::Error as CliError;
+pub use opendap_host_model::Error as CliError;
 
 /// Human rendering of an error, for stderr.
 pub fn human(err: &CliError) -> String {
@@ -22,7 +22,7 @@ pub fn human(err: &CliError) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use opendap_model::error as codes;
+    use opendap_host_model::error as codes;
 
     #[test]
     fn human_rendering_lists_hint_and_command_fixes() {

@@ -2,8 +2,8 @@
 
 use std::path::Path;
 
-use opendap_core::HostProbe;
-use opendap_model::{Finding, Fix, Status};
+use opendap_host_core::HostProbe;
+use opendap_host_model::{Finding, Fix, Status};
 
 use crate::{first_line, which};
 
@@ -165,7 +165,7 @@ impl HostProbe for Qemu {
 
 #[cfg(test)]
 mod tests {
-    use opendap_core::contract;
+    use opendap_host_core::contract;
 
     use super::*;
 

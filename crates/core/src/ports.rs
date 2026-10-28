@@ -4,7 +4,7 @@
 
 use std::time::Duration;
 
-use opendap_model::{
+use opendap_host_model::{
     Error, Finding, HardwareChange, HardwareState, InputEvent, Transport, VmInfo, VmState,
 };
 

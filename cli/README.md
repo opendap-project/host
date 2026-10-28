@@ -77,15 +77,15 @@ The emulator takes the image from `ODAP_IMAGE`, else from a blackbird-os checkou
 
 | Crate | Folder | Layer | Contents |
 |---|---|---|---|
-| `opendap-model` | `crates/model/` | Domain model | Types and schema IDs: devices, targets, virtual T1 instances, exec results, captures, input events, findings, error codes and errors as data |
-| `opendap-core` | `crates/core/` | Application core | Use cases (resolve a target, list devices, list, get, start and stop the virtual T1, exec, capture the screen, send input, doctor) written against ports: `VmProvider`, `VmBackend`, `DeviceTransport`, `ScreenSource`, `InputSink`, `HostProbe`, `Clock`. The `contract` feature exposes one test suite per port |
-| `opendap-transport-vm` | `crates/transports/emulator/` | Adapter | Virtual devices through virtual-devices' `odap-vdev`, discovery of its checkout, and their `doctor` checks |
-| `opendap-transport-ssh` | `crates/transports/ssh/` | Adapter | Commands over SSH, each argument quoted for the remote shell |
-| `opendap-host` | `crates/platform/` | Adapter | Program lookup, the system clock and the host's `doctor` checks (platform, programs, QEMU) |
-| `opendap-cli-kit` | `crates/command/` | Interface | Conventions of the toolkit CLIs: output modes, the error envelope, exit codes, command metadata, agent detection |
-| `opendap-cli` | `cli/` | Interface | The `opendap` binary: the command tree, command metadata (`src/meta.rs`), wiring of the adapters into the core, rendering |
+| `opendap-host-model` | `crates/model/` | Domain model | Types and schema IDs: devices, targets, virtual T1 instances, exec results, captures, input events, findings, error codes and errors as data |
+| `opendap-host-core` | `crates/core/` | Application core | Use cases (resolve a target, list devices, list, get, start and stop the virtual T1, exec, capture the screen, send input, doctor) written against ports: `VmProvider`, `VmBackend`, `DeviceTransport`, `ScreenSource`, `InputSink`, `HostProbe`, `Clock`. The `contract` feature exposes one test suite per port |
+| `opendap-host-transports-emulator` | `crates/transports/emulator/` | Adapter | Virtual devices through virtual-devices' `odap-vdev`, discovery of its checkout, and their `doctor` checks |
+| `opendap-host-transports-ssh` | `crates/transports/ssh/` | Adapter | Commands over SSH, each argument quoted for the remote shell |
+| `opendap-host-platform` | `crates/platform/` | Adapter | Program lookup, the system clock and the host's `doctor` checks (platform, programs, QEMU) |
+| `opendap-host-command` | `crates/command/` | Interface | Conventions of the toolkit CLIs: output modes, the error envelope, exit codes, command metadata, agent detection |
+| `opendap-host-cli` | `cli/` | Interface | The `opendap` binary: the command tree, command metadata (`src/meta.rs`), wiring of the adapters into the core, rendering |
 
-Dependencies point inward only: the model depends on no other crate here; the core on the model; adapters on the core and the model (the transports also use `opendap-host` to find programs); the interface crates on everything above. The model and the core do no I/O and hold no platform code. Platform-specific code lives in the adapters, which support POSIX hosts.
+Dependencies point inward only: the model depends on no other crate here; the core on the model; adapters on the core and the model (the transports also use `opendap-host-platform` to find programs); the interface crates on everything above. The model and the core do no I/O and hold no platform code. Platform-specific code lives in the adapters, which support POSIX hosts.
 
 Tests: unit tests of the core run against fake adapters; each adapter runs the contract suite of the ports it implements; `cli/tests/` checks the binary. End-to-end checks run against the virtual T1 by hand (see [Usage](#usage)).
 
@@ -94,7 +94,7 @@ Tests: unit tests of the core run against fake adapters; each adapter runs the c
 This repository follows the [REUSE](https://reuse.software) layout: license texts live in `LICENSES/` and `REUSE.toml` maps each path to its license.
 
 - Default (the `opendap` binary): **GNU GPL v3.0 or later** (`GPL-3.0-or-later`)
-- The library crates (`opendap-model`, `opendap-core`, `opendap-transport-vm`, `opendap-transport-ssh`, `opendap-host`, `opendap-cli-kit`): **Mozilla Public License 2.0** (`MPL-2.0`), libraries shared with OpenDAP Desktop and plugins
+- The library crates (`opendap-host-model`, `opendap-host-core`, `opendap-host-transports-emulator`, `opendap-host-transports-ssh`, `opendap-host-platform`, `opendap-host-command`): **Mozilla Public License 2.0** (`MPL-2.0`), libraries shared with OpenDAP Desktop and plugins
 - Markdown files and `docs/`: **Creative Commons Attribution-ShareAlike 4.0** (`CC-BY-SA-4.0`)
 - `templates/`: **MIT, so generated projects are not bound to the toolkit's license** (`MIT`)
 

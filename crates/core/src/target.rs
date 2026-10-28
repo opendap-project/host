@@ -1,8 +1,8 @@
 //! Resolving `--target` (or the single running candidate) to a device.
 
-use opendap_model::error as codes;
-use opendap_model::vm::DEFAULT_NAME;
-use opendap_model::{Error, Target, Transport, VmState};
+use opendap_host_model::error as codes;
+use opendap_host_model::vm::DEFAULT_NAME;
+use opendap_host_model::{Error, Target, Transport, VmState};
 
 use crate::ports::{VmBackend, VmProvider};
 use crate::vm::check_name;

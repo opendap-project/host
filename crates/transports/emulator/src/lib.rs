@@ -16,15 +16,15 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, Output, Stdio};
 use std::time::Duration;
 
-use opendap_core::{HardwareBench, HostProbe, InputSink, ScreenSource, VmBackend, VmProvider};
-use opendap_host::probes::finding;
-use opendap_host::require_tool;
-use opendap_model::error as codes;
-use opendap_model::vm::DEFAULT_NAME;
-use opendap_model::{
+use opendap_host_core::{HardwareBench, HostProbe, InputSink, ScreenSource, VmBackend, VmProvider};
+use opendap_host_model::error as codes;
+use opendap_host_model::vm::DEFAULT_NAME;
+use opendap_host_model::{
     Attachment, Endpoints, Error, Finding, Fix, HardwareChange, HardwareState, ImageInfo,
     InputEvent, Status, Transport, VmInfo,
 };
+use opendap_host_platform::probes::finding;
+use opendap_host_platform::require_tool;
 use serde_json::Value;
 
 /// The program that opens SSH sessions to the virtual device, for plans.
@@ -120,7 +120,7 @@ impl VirtualDevice {
             .unwrap_or(2222)
     }
 
-    /// `odap-vdev ssh --`, without the remote command. Feed it to `opendap_transport_ssh::SshExec`.
+    /// `odap-vdev ssh --`, without the remote command. Feed it to `opendap_host_transports_ssh::SshExec`.
     pub fn ssh_command(&self) -> Command {
         let mut c = Command::new(self.tool());
         c.args(["ssh", "--"]);
@@ -268,7 +268,7 @@ impl VmBackend for VirtualDevice {
     fn info(&self) -> VmInfo {
         let st = self.status();
         let pid = st["pid"].as_u64().map(|p| p as u32);
-        let state = opendap_core::vm::state_of(pid, || self.ssh_ready());
+        let state = opendap_host_core::vm::state_of(pid, || self.ssh_ready());
         let image = Self::status_str(&st, &["image", "path"]);
         VmInfo {
             id: format!("vm:{DEFAULT_NAME}"),
@@ -503,8 +503,8 @@ fn checkout_findings(vm: &VirtualDevice) -> Vec<Finding> {
 
 #[cfg(test)]
 mod tests {
-    use opendap_core::contract;
-    use opendap_model::{Role, VmState};
+    use opendap_host_core::contract;
+    use opendap_host_model::{Role, VmState};
 
     use super::*;
 

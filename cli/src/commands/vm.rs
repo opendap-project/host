@@ -1,12 +1,12 @@
 use std::time::Duration;
 
-use opendap_cli_kit::output::{note, table};
-use opendap_cli_kit::{CliError, OutputMode};
-use opendap_core::Outcome;
-use opendap_core::vm::{self, Changed as VmChanged, StartOptions};
-use opendap_host::SystemClock;
-use opendap_model::VmInfo;
-use opendap_transport_vm::LocalVms;
+use opendap_host_command::output::{note, table};
+use opendap_host_command::{CliError, OutputMode};
+use opendap_host_core::Outcome;
+use opendap_host_core::vm::{self, Changed as VmChanged, StartOptions};
+use opendap_host_model::VmInfo;
+use opendap_host_platform::SystemClock;
+use opendap_host_transports_emulator::LocalVms;
 use serde::Serialize;
 
 use super::{Ctx, Doc, emit_plan};

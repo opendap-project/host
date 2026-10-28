@@ -1,8 +1,10 @@
 //! The physical side of a virtual device: reading it, changing it by hand, and the state of a
 //! switch that makes such a change, for surfaces that show one (the simulator window, Desktop).
 
-use opendap_model::error as codes;
-use opendap_model::{Attachment, Error, HardwareChange, HardwareChanged, HardwareState, Transport};
+use opendap_host_model::error as codes;
+use opendap_host_model::{
+    Attachment, Error, HardwareChange, HardwareChanged, HardwareState, Transport,
+};
 
 use crate::Outcome;
 use crate::ports::HardwareBench;
@@ -29,11 +31,14 @@ pub fn change<B: HardwareBench>(
         ));
     }
     if let HardwareChange::Light { lux } = change
-        && lux > opendap_model::LIGHT_MAX_LUX
+        && lux > opendap_host_model::LIGHT_MAX_LUX
     {
         return Err(Error::new(
             &codes::INPUT_INVALID,
-            format!("light {lux} lx: 0 to {} lx", opendap_model::LIGHT_MAX_LUX),
+            format!(
+                "light {lux} lx: 0 to {} lx",
+                opendap_host_model::LIGHT_MAX_LUX
+            ),
         ));
     }
     let before = bench.hardware(&target)?;

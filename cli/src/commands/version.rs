@@ -1,4 +1,4 @@
-use opendap_cli_kit::CliError;
+use opendap_host_command::CliError;
 use serde::Serialize;
 
 use super::{Ctx, Doc};
@@ -17,7 +17,7 @@ pub fn run(ctx: &Ctx) -> Result<u8, CliError> {
         version: env!("CARGO_PKG_VERSION"),
         commit,
         target: env!("OPENDAP_BUILD_TARGET"),
-        model_schemas: opendap_model::SCHEMAS,
+        model_schemas: opendap_host_model::SCHEMAS,
     };
     ctx.out.emit(
         &Doc {

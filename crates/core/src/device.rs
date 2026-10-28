@@ -1,7 +1,7 @@
 //! Device discovery.
 
-use opendap_model::vm::DEFAULT_NAME;
-use opendap_model::{Device, DeviceList, DeviceState, Mode, Transport, VmState, Warning};
+use opendap_host_model::vm::DEFAULT_NAME;
+use opendap_host_model::{Device, DeviceList, DeviceState, Mode, Transport, VmState, Warning};
 
 use crate::ports::{VmBackend, VmProvider};
 

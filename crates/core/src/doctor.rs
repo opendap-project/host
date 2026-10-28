@@ -1,6 +1,6 @@
 //! `doctor`: host checks, each with a status and a fix.
 
-use opendap_model::DoctorReport;
+use opendap_host_model::DoctorReport;
 
 use crate::ports::HostProbe;
 
@@ -11,7 +11,7 @@ pub fn run(probes: &[&dyn HostProbe]) -> DoctorReport {
 
 #[cfg(test)]
 mod tests {
-    use opendap_model::Status;
+    use opendap_host_model::Status;
 
     use super::*;
     use crate::fake::FakeProbe;

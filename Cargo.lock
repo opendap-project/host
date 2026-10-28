@@ -137,47 +137,39 @@ dependencies = [
 ]
 
 [[package]]
-name = "opendap-cli"
+name = "opendap-host-cli"
 version = "0.1.0"
 dependencies = [
  "clap",
- "opendap-cli-kit",
- "opendap-core",
- "opendap-host",
- "opendap-model",
- "opendap-transport-ssh",
- "opendap-transport-vm",
+ "opendap-host-command",
+ "opendap-host-core",
+ "opendap-host-model",
+ "opendap-host-platform",
+ "opendap-host-transports-emulator",
+ "opendap-host-transports-ssh",
  "serde",
  "serde_json",
 ]
 
 [[package]]
-name = "opendap-cli-kit"
+name = "opendap-host-command"
 version = "0.1.0"
 dependencies = [
- "opendap-model",
+ "opendap-host-model",
  "serde",
  "serde_json",
 ]
 
 [[package]]
-name = "opendap-core"
+name = "opendap-host-core"
 version = "0.1.0"
 dependencies = [
- "opendap-model",
+ "opendap-host-model",
  "serde_json",
 ]
 
 [[package]]
-name = "opendap-host"
-version = "0.1.0"
-dependencies = [
- "opendap-core",
- "opendap-model",
-]
-
-[[package]]
-name = "opendap-model"
+name = "opendap-host-model"
 version = "0.1.0"
 dependencies = [
  "opendap-bus-model",
@@ -187,22 +179,30 @@ dependencies = [
 ]
 
 [[package]]
-name = "opendap-transport-ssh"
+name = "opendap-host-platform"
 version = "0.1.0"
 dependencies = [
- "opendap-core",
- "opendap-host",
- "opendap-model",
+ "opendap-host-core",
+ "opendap-host-model",
 ]
 
 [[package]]
-name = "opendap-transport-vm"
+name = "opendap-host-transports-emulator"
 version = "0.1.0"
 dependencies = [
- "opendap-core",
- "opendap-host",
- "opendap-model",
+ "opendap-host-core",
+ "opendap-host-model",
+ "opendap-host-platform",
  "serde_json",
+]
+
+[[package]]
+name = "opendap-host-transports-ssh"
+version = "0.1.0"
+dependencies = [
+ "opendap-host-core",
+ "opendap-host-model",
+ "opendap-host-platform",
 ]
 
 [[package]]

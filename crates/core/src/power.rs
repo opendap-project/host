@@ -2,8 +2,8 @@
 //! way `adb reboot recovery` is, never an imitation of the button combinations (those stay a way
 //! to test the buttons: `opendap input`).
 
-use opendap_model::error as codes;
-use opendap_model::{Error, PowerAction, PowerDone, Target};
+use opendap_host_model::error as codes;
+use opendap_host_model::{Error, PowerAction, PowerDone, Target};
 
 use crate::Outcome;
 use crate::ports::{DeviceTransport, Exit, VmProvider};
@@ -118,7 +118,7 @@ impl Phase {
 
 #[cfg(test)]
 mod tests {
-    use opendap_model::BootMode;
+    use opendap_host_model::BootMode;
 
     use super::*;
     use crate::fake::{FakeProvider, FakeTransport};

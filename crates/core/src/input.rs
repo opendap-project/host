@@ -1,6 +1,6 @@
 //! Input events.
 
-use opendap_model::{Error, InputEvent, InputSent, Transport};
+use opendap_host_model::{Error, InputEvent, InputSent, Transport};
 
 use crate::Outcome;
 use crate::ports::InputSink;
@@ -25,7 +25,7 @@ pub fn send<S: InputSink>(
 
 #[cfg(test)]
 mod tests {
-    use opendap_model::Role;
+    use opendap_host_model::Role;
 
     use super::*;
     use crate::fake::FakeInput;

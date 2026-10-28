@@ -1,8 +1,8 @@
-use opendap_cli_kit::CliError;
-use opendap_cli_kit::output::note;
-use opendap_core::{Need, Outcome, resolve_target};
-use opendap_model::{HardwareChange, HardwareState};
-use opendap_transport_vm::LocalVms;
+use opendap_host_command::CliError;
+use opendap_host_command::output::note;
+use opendap_host_core::{Need, Outcome, resolve_target};
+use opendap_host_model::{HardwareChange, HardwareState};
+use opendap_host_transports_emulator::LocalVms;
 
 use super::{Ctx, Doc, emit_plan};
 use crate::cli::HardwareCmd;
@@ -60,7 +60,7 @@ fn line(st: &HardwareState) -> String {
 
 fn get(ctx: &Ctx) -> Result<u8, CliError> {
     let (vm, target) = resolve_target(&LocalVms, ctx.target.as_ref(), Need::Qmp)?;
-    let st = opendap_core::hardware::state(&vm, &target)?;
+    let st = opendap_host_core::hardware::state(&vm, &target)?;
     let text = line(&st);
     ctx.out.emit(
         &Doc {
@@ -74,7 +74,7 @@ fn get(ctx: &Ctx) -> Result<u8, CliError> {
 
 fn update(ctx: &Ctx, change: HardwareChange) -> Result<u8, CliError> {
     let (vm, target) = resolve_target(&LocalVms, ctx.target.as_ref(), Need::Qmp)?;
-    let done = match opendap_core::hardware::change(&vm, target, change, ctx.dry_run)? {
+    let done = match opendap_host_core::hardware::change(&vm, target, change, ctx.dry_run)? {
         Outcome::Plan(plan) => return emit_plan(ctx, "opendap.hardware/v1", plan),
         Outcome::Done(done) => done,
     };

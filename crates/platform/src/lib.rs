@@ -7,9 +7,9 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::time::{Duration, Instant};
 
-use opendap_core::Clock;
-use opendap_model::Error;
-use opendap_model::error as codes;
+use opendap_host_core::Clock;
+use opendap_host_model::Error;
+use opendap_host_model::error as codes;
 
 pub use probes::{HostPlatform, HostTools, Qemu};
 

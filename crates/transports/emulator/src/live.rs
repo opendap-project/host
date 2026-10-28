@@ -13,9 +13,9 @@ use std::sync::Mutex;
 use std::thread;
 use std::time::Duration;
 
-use opendap_core::InputSink;
-use opendap_model::error as codes;
-use opendap_model::{Error, InputEvent, Role};
+use opendap_host_core::InputSink;
+use opendap_host_model::error as codes;
+use opendap_host_model::{Error, InputEvent, Role};
 use serde_json::{Value, json};
 
 type Session = (UnixStream, BufReader<UnixStream>);
@@ -216,6 +216,6 @@ mod tests {
     #[test]
     fn passes_the_input_sink_contract() {
         let keys = LiveKeys::new(Path::new("/nonexistent"), vec![]);
-        opendap_core::contract::input_sink(&keys);
+        opendap_host_core::contract::input_sink(&keys);
     }
 }

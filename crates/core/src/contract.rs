@@ -4,8 +4,10 @@
 //!
 //! The suites panic on the first broken rule, like `assert!`.
 
-use opendap_model::vm::DEFAULT_NAME;
-use opendap_model::{Attachment, HardwareChange, InputEvent, Role, Status, Transport, VmState};
+use opendap_host_model::vm::DEFAULT_NAME;
+use opendap_host_model::{
+    Attachment, HardwareChange, InputEvent, Role, Status, Transport, VmState,
+};
 
 use crate::ports::{
     DeviceTransport, Exit, HardwareBench, HostProbe, InputSink, ScreenSource, VmBackend,
@@ -133,7 +135,10 @@ pub fn hardware_bench<B: HardwareBench>(b: &B) {
         .collect();
     assert_eq!(st.attached, order);
     assert!(st.battery.is_none_or(|p| p <= 100));
-    assert!(st.light.is_none_or(|l| l <= opendap_model::LIGHT_MAX_LUX));
+    assert!(
+        st.light
+            .is_none_or(|l| l <= opendap_host_model::LIGHT_MAX_LUX)
+    );
 }
 
 /// [`HostProbe`]: findings have a dotted ID, a title and a message, and every

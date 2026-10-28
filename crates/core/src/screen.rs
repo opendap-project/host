@@ -1,7 +1,7 @@
 //! Display captures.
 
-use opendap_model::error as codes;
-use opendap_model::{Error, ScreenCapture, Transport};
+use opendap_host_model::error as codes;
+use opendap_host_model::{Error, ScreenCapture, Transport};
 
 use crate::Outcome;
 use crate::ports::ScreenSource;

@@ -172,7 +172,7 @@ pub enum AttachmentArg {
     Charger,
 }
 
-impl From<AttachmentArg> for opendap_model::Attachment {
+impl From<AttachmentArg> for opendap_host_model::Attachment {
     fn from(a: AttachmentArg) -> Self {
         match a {
             AttachmentArg::Microsd => Self::Microsd,
@@ -206,7 +206,7 @@ pub enum BootModeArg {
     Maskrom,
 }
 
-impl From<BootModeArg> for opendap_model::BootMode {
+impl From<BootModeArg> for opendap_host_model::BootMode {
     fn from(m: BootModeArg) -> Self {
         match m {
             BootModeArg::Normal => Self::Normal,
@@ -242,7 +242,7 @@ pub enum InputEvent {
         /// The control's role (action, volume-up, volume-down, main, back, select, menu; a device
         /// has some of them: the T1 the first four)
         #[arg(value_parser = parse_role)]
-        role: opendap_model::Role,
+        role: opendap_host_model::Role,
         /// How long the control stays down, in milliseconds
         #[arg(long, value_name = "MS", default_value_t = 100,
               value_parser = clap::value_parser!(u64).range(1..=60_000))]
@@ -252,13 +252,13 @@ pub enum InputEvent {
     KeyDown {
         /// The control's role on the device
         #[arg(value_parser = parse_role)]
-        role: opendap_model::Role,
+        role: opendap_host_model::Role,
     },
     /// Release a control put down with key-down
     KeyUp {
         /// The control's role on the device
         #[arg(value_parser = parse_role)]
-        role: opendap_model::Role,
+        role: opendap_host_model::Role,
     },
     /// A key of a keyboard attached to the device, by its Linux name (left, right, enter…): it
     /// reaches the activity as a keyboard's key, not as a control
@@ -282,9 +282,9 @@ pub enum InputEvent {
 }
 
 /// A role by its name; an unknown one is refused with the roles there are.
-pub fn parse_role(s: &str) -> Result<opendap_model::Role, String> {
+pub fn parse_role(s: &str) -> Result<opendap_host_model::Role, String> {
     s.parse()
-        .map_err(|e: opendap_model::UnknownRole| e.to_string())
+        .map_err(|e: opendap_host_model::UnknownRole| e.to_string())
 }
 
 /// Seconds from `90`, `90s` or `3m`.

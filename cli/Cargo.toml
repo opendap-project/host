@@ -1,5 +1,5 @@
 [package]
-name = "opendap-cli"
+name = "opendap-host-cli"
 description = "The opendap command-line tool for OpenDAP devices"
 version.workspace = true
 edition.workspace = true
@@ -12,12 +12,12 @@ name = "opendap"
 path = "src/main.rs"
 
 [dependencies]
-opendap-model.workspace = true
-opendap-cli-kit.workspace = true
-opendap-core.workspace = true
-opendap-host.workspace = true
-opendap-transport-ssh.workspace = true
-opendap-transport-vm.workspace = true
+opendap-host-model.workspace = true
+opendap-host-command.workspace = true
+opendap-host-core.workspace = true
+opendap-host-platform.workspace = true
+opendap-host-transports-ssh.workspace = true
+opendap-host-transports-emulator.workspace = true
 clap.workspace = true
 serde.workspace = true
 serde_json.workspace = true
