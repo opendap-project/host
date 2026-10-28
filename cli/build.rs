@@ -14,6 +14,6 @@ fn main() {
         "cargo:rustc-env=OPENDAP_BUILD_TARGET={}",
         std::env::var("TARGET").unwrap_or_default()
     );
-    println!("cargo:rerun-if-changed=../../.git/HEAD");
-    println!("cargo:rerun-if-changed=../../.git/refs/heads");
+    println!("cargo:rerun-if-changed=../.git/HEAD");
+    println!("cargo:rerun-if-changed=../.git/refs/heads");
 }

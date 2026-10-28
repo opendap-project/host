@@ -32,8 +32,8 @@ Every other command in the spec is not implemented yet.
 ## Build
 
 ```sh
-cargo build            # target/debug/opendap
-cargo test
+cargo build            # target/debug/opendap, at the root of host
+cargo test --workspace
 ```
 
 Tests never inherit a hook's `GIT_*` variables: under pre-commit, git exports `GIT_DIR`, `GIT_INDEX_FILE` and others, and a test whose git inherits them acts on the repository being committed. Every child process a test starts drops them (`env_remove`). Each language's protection is in the Developer Toolkit's [rule](https://github.com/opendap-project/tools#tests-never-inherit-a-hooks-git-variables); `odapkit audit` flags a test file that runs git without it.
@@ -68,25 +68,26 @@ The emulator takes the image from `ODAP_IMAGE`, else from a blackbird-os checkou
 
 ## Layout
 
-- `Cargo.toml`, `crates/` — the Rust workspace, layered as the [Rust crate architecture](https://github.com/opendap-project/blackbird/blob/main/system/docs/specs/rust-crate-architecture.md) sets out
+- `Cargo.toml`, `build.rs`, `src/`, `tests/` — the crate of the `opendap` binary
+- [`../crates/`](../crates) — the library crates, shared with OpenDAP Desktop; the Cargo workspace (`Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml`, `check.toml`) is at the root of `host`, layered as the [Rust crate architecture](https://github.com/opendap-project/blackbird/blob/main/system/docs/specs/rust-crate-architecture.md) sets out
 - `templates/` — project templates the CLI generates
 - `docs/` — requirements and the [CLI spec](docs/specs/opendap-cli.md)
 
 ### Crates
 
-| Crate | Layer | Contents |
-|---|---|---|
-| `opendap-model` | Domain model | Types and schema IDs: devices, targets, virtual T1 instances, exec results, captures, input events, findings, error codes and errors as data |
-| `opendap-core` | Application core | Use cases (resolve a target, list devices, list, get, start and stop the virtual T1, exec, capture the screen, send input, doctor) written against ports: `VmProvider`, `VmBackend`, `DeviceTransport`, `ScreenSource`, `InputSink`, `HostProbe`, `Clock`. The `contract` feature exposes one test suite per port |
-| `opendap-transport-vm` | Adapter | Virtual devices through virtual-devices' `odap-vdev`, discovery of its checkout, and their `doctor` checks |
-| `opendap-transport-ssh` | Adapter | Commands over SSH, each argument quoted for the remote shell |
-| `opendap-host` | Adapter | Program lookup, the system clock and the host's `doctor` checks (platform, programs, QEMU) |
-| `opendap-cli-kit` | Interface | Conventions of the toolkit CLIs: output modes, the error envelope, exit codes, command metadata, agent detection |
-| `opendap-cli` | Interface | The `opendap` binary: the command tree, command metadata (`src/meta.rs`), wiring of the adapters into the core, rendering |
+| Crate | Folder | Layer | Contents |
+|---|---|---|---|
+| `opendap-model` | `crates/model/` | Domain model | Types and schema IDs: devices, targets, virtual T1 instances, exec results, captures, input events, findings, error codes and errors as data |
+| `opendap-core` | `crates/core/` | Application core | Use cases (resolve a target, list devices, list, get, start and stop the virtual T1, exec, capture the screen, send input, doctor) written against ports: `VmProvider`, `VmBackend`, `DeviceTransport`, `ScreenSource`, `InputSink`, `HostProbe`, `Clock`. The `contract` feature exposes one test suite per port |
+| `opendap-transport-vm` | `crates/transports/emulator/` | Adapter | Virtual devices through virtual-devices' `odap-vdev`, discovery of its checkout, and their `doctor` checks |
+| `opendap-transport-ssh` | `crates/transports/ssh/` | Adapter | Commands over SSH, each argument quoted for the remote shell |
+| `opendap-host` | `crates/platform/` | Adapter | Program lookup, the system clock and the host's `doctor` checks (platform, programs, QEMU) |
+| `opendap-cli-kit` | `crates/command/` | Interface | Conventions of the toolkit CLIs: output modes, the error envelope, exit codes, command metadata, agent detection |
+| `opendap-cli` | `cli/` | Interface | The `opendap` binary: the command tree, command metadata (`src/meta.rs`), wiring of the adapters into the core, rendering |
 
 Dependencies point inward only: the model depends on no other crate here; the core on the model; adapters on the core and the model (the transports also use `opendap-host` to find programs); the interface crates on everything above. The model and the core do no I/O and hold no platform code. Platform-specific code lives in the adapters, which support POSIX hosts.
 
-Tests: unit tests of the core run against fake adapters; each adapter runs the contract suite of the ports it implements; `crates/opendap-cli/tests/` checks the binary. End-to-end checks run against the virtual T1 by hand (see [Usage](#usage)).
+Tests: unit tests of the core run against fake adapters; each adapter runs the contract suite of the ports it implements; `cli/tests/` checks the binary. End-to-end checks run against the virtual T1 by hand (see [Usage](#usage)).
 
 ## License
 

@@ -32,28 +32,31 @@ repos:
         language: system
         pass_filenames: false
         files: ^cli/docs/requirements/
+  # The Cargo workspace at the root: cli/ and crates/.
+  - repo: local
+    hooks:
       - id: rustfmt
-        name: cli rustfmt --check on changed Rust files
+        name: rustfmt --check on changed Rust files
         entry: rustfmt --check --edition 2024
         language: system
         types: [rust]
-        files: ^cli/
+        files: ^(cli|crates)/
       - id: clippy
-        name: cli cargo clippy -D warnings (before push)
-        entry: sh -c 'cd cli && cargo clippy --workspace --all-targets -q -- -D warnings'
+        name: cargo clippy -D warnings (before push)
+        entry: cargo clippy --workspace --all-targets -q -- -D warnings
         language: system
         pass_filenames: false
         types: [rust]
         stages: [pre-push]
-        files: ^cli/
+        files: ^(cli|crates)/
       - id: cargo-test
-        name: cli cargo test (before push)
-        entry: sh -c 'cd cli && cargo test --workspace -q'
+        name: cargo test (before push)
+        entry: cargo test --workspace -q
         language: system
         pass_filenames: false
         types: [rust]
         stages: [pre-push]
-        files: ^cli/
+        files: ^(cli|crates)/
   # desktop/
   - repo: local
     hooks:

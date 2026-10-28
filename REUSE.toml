@@ -9,3 +9,22 @@ SPDX-License-Identifier = "CC-BY-SA-4.0"
 path = [".pre-commit-config.yaml", ".gitignore", ".gitattributes", ".markdownlint-cli2.jsonc", "REUSE.toml"]
 SPDX-FileCopyrightText = "2026 The OpenDAP Project"
 SPDX-License-Identifier = "MIT"
+
+# The Cargo workspace of cli/ and crates/.
+[[annotations]]
+path = ["Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "check.toml"]
+SPDX-FileCopyrightText = "2026 The OpenDAP Project"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# Library crates others build on: MPL-2.0. The opendap binary in cli/ keeps GPL-3.0-or-later.
+[[annotations]]
+path = "crates/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 The OpenDAP Project"
+SPDX-License-Identifier = "MPL-2.0"
+
+[[annotations]]
+path = "crates/**/*.md"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 The OpenDAP Project"
+SPDX-License-Identifier = "CC-BY-SA-4.0"
