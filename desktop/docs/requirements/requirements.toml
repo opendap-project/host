@@ -1,0 +1,109 @@
+schema = "opendap.requirements/v1"
+
+[[block]]
+markdown = "# Desktop requirements\n"
+
+[[block]]
+[[block.requirement]]
+id = "DESK-001"
+text = "OpenDAP shall have a full-featured desktop app, written in Rust, besides the `opendap` CLI."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-002"
+text = "The desktop app shall let users do everything that can be done with an OpenDAP, from casual use to advanced use."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-003"
+text = "The app shall serve casual users first and keep advanced features available without imposing them."
+priority = "must"
+status = "draft"
+[[block.requirement]]
+id = "DESK-004"
+text = "The app and the `opendap` CLI shall share one core and one domain model (TK-009), so a feature exists once and both expose it."
+priority = "must"
+status = "draft"
+[[block.requirement]]
+id = "DESK-005"
+text = "OpenDAP Desktop shall run on UNIX/POSIX hosts, tested on macOS, like the rest of the project."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-006"
+text = "OpenDAP Desktop shall include a per-user background service on the host, started at login without administrator rights, for work that must happen while the app is closed: device detection, library and playlist sync, backups, update downloads, notifications and persistent connections."
+priority = "should"
+status = "draft"
+[[block.requirement]]
+id = "DESK-007"
+text = "The background service shall be another interface over the same core as the CLI and the app (Rust crate architecture). The app and the CLI use it when it runs; the CLI keeps working without it."
+priority = "should"
+status = "draft"
+[[block.requirement]]
+id = "DESK-008"
+text = "The background service shall integrate with each host's standard service manager and device access (launchd on macOS, systemd user units and udev rules on Linux; Windows equivalents if Windows is supported), and stay light on CPU, memory and battery when idle."
+priority = "should"
+status = "draft"
+[[block.requirement]]
+id = "DESK-009"
+text = "OpenDAP Desktop should also support Windows (split from DESK-005)."
+priority = "should"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-010"
+text = "OpenDAP Desktop should offer optional transcoding per device when syncing, to fit more music, without ever changing the library."
+priority = "should"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-011"
+text = "Sync and the connected features between the T1 and a computer (over USB, Wi-Fi, Bluetooth or any other link) shall go through OpenDAP Desktop or the `opendap` CLI. Without them, the T1 still offers plain USB storage (T1-065) and complete standalone use (T1-066)."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-012"
+text = "The listener's audio files in the folders they choose shall be the library; OpenDAP Desktop indexes and enriches them, and keeps the shared collection separate from each person's own state (SYS-043)."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-013"
+text = "What goes to each device shall be set by rules (everything, selections, smart rules, fill the free space), always previewed before it is applied; removing something from a device's selection never removes it from the library."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-014"
+text = "Providers shall be optional adapters that declare what they can do (search, checkout, download, purchases, metadata, scrobbling, playlist import); purchases land as files in the library with their provenance, and results from several providers appear side by side, none by default."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-015"
+text = "Playlists shall be kept by open identifiers and resolved to local files first; an entry that cannot be resolved stays in place with the reason."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-016"
+text = "OpenDAP Desktop should show the collection's health (missing art, inconsistent tags, duplicates, editions, unidentified files, files on no device) and fix it in batches with a preview and undo."
+priority = "should"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-017"
+text = "OpenDAP Desktop shall manage the listener's devices: pairing and removal, updates staged for them, versioned backups, restore to a new device, and diagnostics the owner reads and chooses to send."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-018"
+text = "OpenDAP Desktop should offer a drop folder whose files reach the T1 at once, outside the library (for example mixes to check)."
+priority = "should"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-019"
+text = "OpenDAP Desktop shall be usable at once with any library size, without loading the whole library first."
+priority = "must"
+status = "confirmed"
+[[block.requirement]]
+id = "DESK-020"
+text = "An older device and a newer OpenDAP Desktop, or the reverse, shall keep working together: what one side lacks is disabled, never a reason to refuse the connection."
+priority = "must"
+status = "confirmed"
+
+[[block]]
+markdown = "\n## Context\n\n- DESK-012 to DESK-020: confirmed.\n- DESK-011: the client on the computer is what makes sync and connected features possible; the T1 never needs it to play, and plain files over USB storage need no client.\n- DESK-010: whatever is useful may be offered. Off by default; lossless stays lossless unless the listener chooses.\n- DESK-006 to DESK-008: Draft until confirmed. The MCP server of the CLI spec (`mcp serve`) can run inside this service.\n- DESK-003 and DESK-004 follow from the request (\"from the casual user to the advanced one\") and from TK-009 (every toolkit tool shares concepts, conventions and one domain model), applying the brand rule \"complexity available, never imposed\".\n- DESK-005: UNIX/POSIX is the main target, tested on macOS (as TK-010, TK-011); Windows is desirable for casual users, so the app avoids POSIX-only assumptions in its core and keeps Windows support possible.\n- Scope to define: music library and sync, device setup and updates, settings, faceplates and HATs, capabilities, backups and recovery, and the developer features the CLI covers (shell, logs, flashing, virtual T1).\n"
