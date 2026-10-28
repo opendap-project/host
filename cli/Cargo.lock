@@ -131,7 +131,7 @@ checksum = "384b8ab6d37215f3c5301a95a4accb5d64aa607f1fcb26a11b5303878451b4fe"
 [[package]]
 name = "opendap-bus-model"
 version = "0.1.0"
-source = "git+https://github.com/opendap-project/system?rev=f39aaced380392e5e3ca338a7cc1f6bf642e23e7#f39aaced380392e5e3ca338a7cc1f6bf642e23e7"
+source = "git+https://github.com/opendap-project/blackbird?rev=b7cc2065f71bb26d330162d7fb93883184292e22#b7cc2065f71bb26d330162d7fb93883184292e22"
 dependencies = [
  "serde",
 ]
