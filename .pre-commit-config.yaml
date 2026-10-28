@@ -1,0 +1,66 @@
+# Local checks for every commit. Install once per clone: pre-commit install
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-added-large-files
+        args: ["--maxkb=5120"]
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: v6.2.0
+    hooks:
+      - id: reuse
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.24.0
+    hooks:
+      - id: markdownlint-cli2
+  - repo: https://github.com/opendap-project/tools
+    rev: v0.1.0
+    hooks:
+      - id: no-stray-files
+  # cli/
+  - repo: local
+    hooks:
+      # The requirements README is rendered from requirements.toml and checked.
+      - id: requirements-current-cli
+        name: cli requirements README rendered (odapkit req render --check)
+        entry: sh -c 'cd cli && odapkit req render docs/requirements/requirements.toml --check'
+        language: system
+        pass_filenames: false
+        files: ^cli/docs/requirements/
+      - id: rustfmt
+        name: cli rustfmt --check on changed Rust files
+        entry: rustfmt --check --edition 2024
+        language: system
+        types: [rust]
+        files: ^cli/
+      - id: clippy
+        name: cli cargo clippy -D warnings (before push)
+        entry: sh -c 'cd cli && cargo clippy --workspace --all-targets -q -- -D warnings'
+        language: system
+        pass_filenames: false
+        types: [rust]
+        stages: [pre-push]
+        files: ^cli/
+      - id: cargo-test
+        name: cli cargo test (before push)
+        entry: sh -c 'cd cli && cargo test --workspace -q'
+        language: system
+        pass_filenames: false
+        types: [rust]
+        stages: [pre-push]
+        files: ^cli/
+  # desktop/
+  - repo: local
+    hooks:
+      # The requirements README is rendered from requirements.toml and checked.
+      - id: requirements-current-desktop
+        name: desktop requirements README rendered (odapkit req render --check)
+        entry: sh -c 'cd desktop && odapkit req render docs/requirements/requirements.toml --check'
+        language: system
+        pass_filenames: false
+        files: ^desktop/docs/requirements/
