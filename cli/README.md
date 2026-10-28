@@ -68,7 +68,7 @@ The emulator takes the image from `ODAP_IMAGE`, else from a blackbird-os checkou
 
 ## Layout
 
-- `Cargo.toml`, `crates/` — the Rust workspace, layered as the [Rust crate architecture](https://github.com/opendap-project/system/blob/main/docs/specs/rust-crate-architecture.md) sets out
+- `Cargo.toml`, `crates/` — the Rust workspace, layered as the [Rust crate architecture](https://github.com/opendap-project/blackbird/blob/main/system/docs/specs/rust-crate-architecture.md) sets out
 - `templates/` — project templates the CLI generates
 - `docs/` — requirements and the [CLI spec](docs/specs/opendap-cli.md)
 

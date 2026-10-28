@@ -27,7 +27,7 @@ The full conventions are in [Appendix A](#appendix-a-shared-conventions): gramma
 ## 3. Architecture
 
 - **One binary, user-side plugins.** `opendap` is a single Rust binary. Extensions for its own audience (for example a HAT's user tools) ship as `opendap-<tool>` binaries and run as external subcommands (the cargo and git pattern). Maintainer tooling is not a plugin: it lives in the toolkit repositories as its own tools (`odapkit image`, `odap-fab`…).
-- **Crates:** `opendap-model` (types and schemas), `opendap-cli-kit` (flags, output, errors, targets, config, logging, agent detection, help, schema, MCP, `doctor` framework, self-update), and one crate per binary. Use cases live in `opendap-core` and its adapter crates, layered as the [Rust crate architecture](https://github.com/opendap-project/system/blob/main/docs/specs/rust-crate-architecture.md) sets out.
+- **Crates:** `opendap-model` (types and schemas), `opendap-cli-kit` (flags, output, errors, targets, config, logging, agent detection, help, schema, MCP, `doctor` framework, self-update), and one crate per binary. Use cases live in `opendap-core` and its adapter crates, layered as the [Rust crate architecture](https://github.com/opendap-project/blackbird/blob/main/system/docs/specs/rust-crate-architecture.md) sets out.
 - **Transports in v0:**
   - SSH, over the network or over USB networking from the main USB-C in gadget mode.
   - Serial console, over the same USB-C path (BRD-039).
