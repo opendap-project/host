@@ -2,7 +2,7 @@
 
 OpenDAP Desktop: the desktop app for everything you can do with an OpenDAP, from a casual user's first sync to advanced development. Written in Rust.
 
-It shares its core and domain model with the [`opendap` CLI](https://github.com/opendap-project/cli): the CLI serves developers and agents, the desktop app serves every user.
+It shares its core and domain model with the [`opendap` CLI](../cli): the CLI serves developers and agents, the desktop app serves every user.
 
 ## Layout
 
