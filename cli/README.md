@@ -36,6 +36,8 @@ cargo build            # target/debug/opendap
 cargo test
 ```
 
+Tests never inherit a hook's `GIT_*` variables: under pre-commit, git exports `GIT_DIR`, `GIT_INDEX_FILE` and others, and a test whose git inherits them acts on the repository being committed. Every child process a test starts drops them (`env_remove`). Each language's protection is in the Developer Toolkit's [rule](https://github.com/opendap-project/tools#tests-never-inherit-a-hooks-git-variables); `odapkit audit` flags a test file that runs git without it.
+
 ## Usage
 
 ```sh

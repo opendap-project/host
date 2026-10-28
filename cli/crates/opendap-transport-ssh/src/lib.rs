@@ -132,6 +132,14 @@ mod tests {
             || {
                 let mut c = Command::new("sh");
                 c.arg("-c");
+                // Tests never inherit a hook's GIT_* variables (HL-64): under pre-commit, git
+                // exports GIT_DIR, GIT_INDEX_FILE and others, and a child's git would act on the
+                // repository being committed.
+                for (k, _) in
+                    std::env::vars_os().filter(|(k, _)| k.to_string_lossy().starts_with("GIT_"))
+                {
+                    c.env_remove(k);
+                }
                 c
             },
             "a local shell",
