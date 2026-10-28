@@ -1,6 +1,7 @@
 //! Locating the virtual-devices checkout that runs virtual devices (`bin/odap-vdev`):
 //! `$ODAP_VIRTUAL_DEVICES_DIR`, else the workspace's `repos.tsv` above the current directory
-//! (RFC 0008). Never a guessed relative path.
+//! (RFC 0008): the `virtual-devices` row, or since the blackbird cut (RFC 0017) the `emulator/`
+//! folder of the `blackbird` row. Never a guessed relative path.
 
 use std::path::{Path, PathBuf};
 
@@ -12,6 +13,9 @@ pub const VD_DIR_VAR: &str = "ODAP_VIRTUAL_DEVICES_DIR";
 
 /// The repository's name in `repos.tsv`.
 pub const VD_REPO: &str = "virtual-devices";
+
+/// The root virtual-devices merged into, and its folder there (RFC 0017).
+pub const VD_ROOT: (&str, &str) = ("blackbird", "emulator");
 
 /// A directory is a virtual-devices checkout when it has the tool.
 pub fn is_vd_checkout(dir: &Path) -> bool {
@@ -39,10 +43,13 @@ pub fn find_vd_checkout(env_value: Option<&str>, cwd: &Path) -> Result<PathBuf, 
         let Ok(tsv) = std::fs::read_to_string(dir.join("repos.tsv")) else {
             continue;
         };
-        let found = tsv.lines().skip(1).find_map(|line| {
-            let (path, slug) = line.split_once('\t')?;
-            (slug.trim().rsplit('/').next() == Some(VD_REPO)).then(|| dir.join(path))
-        });
+        let row = |name: &str| {
+            tsv.lines().skip(1).find_map(|line| {
+                let (path, slug) = line.split_once('\t')?;
+                (slug.trim().rsplit('/').next() == Some(name)).then(|| dir.join(path))
+            })
+        };
+        let found = row(VD_REPO).or_else(|| row(VD_ROOT.0).map(|p| p.join(VD_ROOT.1)));
         return match found {
             Some(p) if is_vd_checkout(&p) => Ok(p.canonicalize().unwrap_or(p)),
             _ => Err(Error::new(
@@ -90,6 +97,22 @@ mod tests {
         let found = find_vd_checkout(None, &root.join("public/cli/x")).unwrap();
         assert!(found.ends_with("public/virtual-devices"));
         assert!(find_vd_checkout(Some("/nonexistent"), &root).is_err());
+        let _ = std::fs::remove_dir_all(&root);
+    }
+
+    #[test]
+    fn finds_the_emulator_folder_of_the_blackbird_root() {
+        let root = std::env::temp_dir().join(format!("opendap-ws-bb-{}", std::process::id()));
+        std::fs::create_dir_all(root.join("public/blackbird/emulator/bin")).unwrap();
+        std::fs::create_dir_all(root.join("public/host/x")).unwrap();
+        std::fs::write(root.join("public/blackbird/emulator/bin/odap-vdev"), "").unwrap();
+        std::fs::write(
+            root.join("repos.tsv"),
+            "path\trepository\npublic/blackbird\topendap-project/blackbird\n",
+        )
+        .unwrap();
+        let found = find_vd_checkout(None, &root.join("public/host/x")).unwrap();
+        assert!(found.ends_with("public/blackbird/emulator"));
         let _ = std::fs::remove_dir_all(&root);
     }
 
