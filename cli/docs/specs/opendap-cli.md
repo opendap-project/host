@@ -145,7 +145,7 @@ What the platform's maintainers use lives in the toolkit repositories, as tools 
 | Task | Tool | Repository |
 |---|---|---|
 | Build images, the sysroot, cross-build, deploy a development extension, security check | `odapkit image`, `odapkit sysroot`, `odapkit cross`, `odapkit deploy`, `odapkit security-check` | toolkit-image |
-| Fab packages, mechanical exports | `fab-package.sh`, `freecad-export.py` | toolkit-hardware |
+| Fab packages, mechanical exports | `fab-package.sh`, `freecad_export.py` | toolkit-hardware |
 | Verification | in progress | toolkit-verify |
 
 The emulator is run by virtual-devices' `odap-vdev`; the CLI targets its devices as `vm:<name>`.
