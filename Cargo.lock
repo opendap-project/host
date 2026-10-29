@@ -55,7 +55,7 @@ dependencies = [
 [[package]]
 name = "blackbird-bus-model"
 version = "0.1.0"
-source = "git+https://github.com/opendap-project/blackbird?rev=3ed6f91f4fae4bb9d52e2de2b0df51452bcba50a#3ed6f91f4fae4bb9d52e2de2b0df51452bcba50a"
+source = "git+https://github.com/opendap-project/blackbird?rev=732394415610a27eb92ca72cd1163d4d34c595a1#732394415610a27eb92ca72cd1163d4d34c595a1"
 dependencies = [
  "serde",
 ]
