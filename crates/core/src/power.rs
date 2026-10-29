@@ -9,10 +9,22 @@ use crate::Outcome;
 use crate::ports::{DeviceTransport, Exit, VmProvider};
 use crate::target::{Need, resolve_target};
 
-/// What runs on the device: its own `odap-reboot` (blackbird-os), which knows the modes it has.
+/// The device's power service, which knows the boot modes it has: Blackbird OS's
+/// `/usr/lib/blackbird/power`, or `odap-reboot` on an image from before that name (kept for one
+/// minor release; the `$1` is the mode).
+pub const REBOOT_SCRIPT: &str =
+    r#"p=/usr/lib/blackbird/power; [ -x "$p" ] || p=odap-reboot; exec "$p" "$1""#;
+
+/// What runs on the device: its own power service, given the mode.
 pub fn device_command(action: PowerAction) -> Vec<String> {
     match action {
-        PowerAction::Reboot { mode } => vec!["odap-reboot".into(), mode.as_str().into()],
+        PowerAction::Reboot { mode } => vec![
+            "sh".into(),
+            "-c".into(),
+            REBOOT_SCRIPT.into(),
+            "power".into(),
+            mode.as_str().into(),
+        ],
         PowerAction::Poweroff => vec!["systemctl".into(), "poweroff".into()],
     }
 }
@@ -38,7 +50,11 @@ where
     }
     let out = transport.run_captured(&argv)?;
     let message = |fallback: &str| {
-        let m = out.stderr.trim().trim_start_matches("odap-reboot: ");
+        let m = out.stderr.trim();
+        let m = m
+            .strip_prefix("power: ")
+            .or_else(|| m.strip_prefix("odap-reboot: "))
+            .unwrap_or(m);
         if m.is_empty() {
             fallback.to_string()
         } else {
@@ -151,7 +167,10 @@ mod tests {
                 ..
             })
         ));
-        assert_eq!(t.ran.borrow()[0], vec!["odap-reboot", "debug"]);
+        assert_eq!(
+            t.ran.borrow()[0],
+            vec!["sh", "-c", REBOOT_SCRIPT, "power", "debug"]
+        );
     }
 
     #[test]

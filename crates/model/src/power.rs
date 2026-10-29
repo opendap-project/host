@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::device::Transport;
 
-/// A mode a device boots into. The device says which it has (blackbird-os `odap-reboot --list`):
+/// A mode a device boots into. The device says which it has (Blackbird OS `/usr/lib/blackbird/power --list`):
 /// `normal` always; `debug` on images with the debug boot entry; `recovery` and `maskrom` from the
 /// board's support package.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
