@@ -9,7 +9,7 @@ publish.workspace = true
 
 [dependencies]
 # The input model shared with the device (RFC 0020).
-opendap-bus-model = { git = "https://github.com/opendap-project/blackbird", rev = "b7cc2065f71bb26d330162d7fb93883184292e22" }
+blackbird-bus-model = { git = "https://github.com/opendap-project/blackbird", rev = "3ed6f91f4fae4bb9d52e2de2b0df51452bcba50a" }
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true
