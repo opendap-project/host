@@ -32,31 +32,6 @@ repos:
         language: system
         pass_filenames: false
         files: ^cli/docs/requirements/
-  # The Cargo workspace at the root: cli/ and crates/.
-  - repo: local
-    hooks:
-      - id: rustfmt
-        name: rustfmt --check on changed Rust files
-        entry: rustfmt --check --edition 2024
-        language: system
-        types: [rust]
-        files: ^(cli|crates)/
-      - id: clippy
-        name: cargo clippy -D warnings (before push)
-        entry: cargo clippy --workspace --all-targets -q -- -D warnings
-        language: system
-        pass_filenames: false
-        types_or: [rust, cargo, cargo-lock]
-        stages: [pre-push]
-        files: ^((cli|crates)/|Cargo\.(toml|lock)$)
-      - id: cargo-test
-        name: cargo test (before push)
-        entry: cargo test --workspace -q
-        language: system
-        pass_filenames: false
-        types_or: [rust, cargo, cargo-lock]
-        stages: [pre-push]
-        files: ^((cli|crates)/|Cargo\.(toml|lock)$)
   # desktop/
   - repo: local
     hooks:
@@ -67,3 +42,19 @@ repos:
         language: system
         pass_filenames: false
         files: ^desktop/docs/requirements/
+# >>> odapkit sync: managed block from the workspace templates; edit them, not this block
+  # odw check: the stages each check.toml declares, on the changed paths (command standard §7).
+  - repo: local
+    hooks:
+      - id: odw-check-fast
+        name: odw check --stage fast
+        entry: odw check --stage fast
+        language: system
+        require_serial: true
+      - id: odw-check-full
+        name: odw check --stage full (before push)
+        entry: odw check --stage full
+        language: system
+        require_serial: true
+        stages: [pre-push]
+# <<< odapkit sync

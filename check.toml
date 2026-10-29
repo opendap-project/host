@@ -1,19 +1,25 @@
 # The lifecycle checks of this repository (schema opendap.check/v1, toolkit-host docs/specs/workspace-schemas.md).
+# Pre-commit and pre-push run them through the odw check hooks odapkit sync renders; a step runs when a changed
+# path matches its `paths`.
 schema = "opendap.check/v1"
 
 [[stage.fast]]
 name = "rustfmt"
 run = ["cargo", "fmt", "--all", "--check"]
+paths = ["**/*.rs"]
 
 [[stage.full]]
 name = "clippy"
 run = ["cargo", "clippy", "--workspace", "--all-targets", "--", "-D", "warnings"]
+paths = ["**/*.rs", "**/Cargo.toml", "Cargo.lock", "rust-toolchain.toml"]
 
 [[stage.full]]
 name = "test"
 run = ["cargo", "test", "--workspace"]
+paths = ["**/*.rs", "**/Cargo.toml", "Cargo.lock", "rust-toolchain.toml"]
 
-# Last: keep the build outputs out of the Spotlight index (skips while any build runs).
+# Last: keep the build outputs out of the Spotlight index (skips while any build runs), after a build.
 [[stage.full]]
 name = "noindex"
 run = ["odapkit", "noindex", "--apply"]
+paths = ["**/*.rs", "**/Cargo.toml", "Cargo.lock", "rust-toolchain.toml"]
