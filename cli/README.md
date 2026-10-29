@@ -52,7 +52,7 @@ opendap vm stop
 
 ### Virtual T1 backend
 
-Virtual devices run from a virtual-devices checkout, through its tool `odap-vdev` (status as JSON, lifecycle, management link, screen and input). The CLI finds the checkout in `$ODAP_VIRTUAL_DEVICES_DIR`, or through the workspace's `repos.tsv` above the current directory.
+Virtual devices run from the emulator, the `emulator/` folder of a blackbird checkout, through its tool `odap-vdev` (status as JSON, lifecycle, management link, screen and input). The CLI finds it under `$ODAP_BLACKBIRD_DIR`, or under the workspace's `blackbird` row in `repos.tsv` above the current directory.
 
 The emulator takes the image from `ODAP_IMAGE`, else from a blackbird-os checkout's build when there is one, else from `~/.local/share/opendap/images/blackbird-os-qemu.raw`, where released images will go (through `opendap image pull`, not built yet). `opendap` needs no toolkit for any of this (RFC 0009). While the image is missing, `doctor` reports it and `vm start` fails with `vm.image_missing`.
 

@@ -1,41 +1,39 @@
-//! Locating the virtual-devices checkout that runs virtual devices (`bin/odap-vdev`):
-//! `$ODAP_VIRTUAL_DEVICES_DIR`, else the workspace's `repos.tsv` above the current directory
-//! (RFC 0008): the `virtual-devices` row, or since the blackbird cut (RFC 0017) the `emulator/`
-//! folder of the `blackbird` row. Never a guessed relative path.
+//! Locating the emulator that runs virtual devices (`bin/odap-vdev`): the `emulator/` folder of the
+//! `blackbird` root (RFC 0017), under `$ODAP_BLACKBIRD_DIR`, else under the workspace's `blackbird`
+//! row in `repos.tsv` above the current directory (RFC 0008). The old `virtual-devices` variable and
+//! row are not read any more (HL-91). Never a guessed relative path.
 
 use std::path::{Path, PathBuf};
 
 use opendap_host_model::Error;
 use opendap_host_model::error as codes;
 
-/// Environment variable that points at a virtual-devices checkout.
-pub const VD_DIR_VAR: &str = "ODAP_VIRTUAL_DEVICES_DIR";
+/// Environment variable that points at the blackbird checkout.
+pub const VD_DIR_VAR: &str = "ODAP_BLACKBIRD_DIR";
 
-/// The repository's name in `repos.tsv`.
-pub const VD_REPO: &str = "virtual-devices";
-
-/// The root virtual-devices merged into, and its folder there (RFC 0017).
+/// The root the emulator is part of, and its folder there (RFC 0017).
 pub const VD_ROOT: (&str, &str) = ("blackbird", "emulator");
 
-/// A directory is a virtual-devices checkout when it has the tool.
+/// A directory is an emulator when it has the tool.
 pub fn is_vd_checkout(dir: &Path) -> bool {
     dir.join("bin/odap-vdev").is_file()
 }
 
-/// `$ODAP_VIRTUAL_DEVICES_DIR` when set (it must be a checkout), otherwise the workspace's entry.
+/// The `emulator/` folder of `$ODAP_BLACKBIRD_DIR` when set (it must have the tool), otherwise of the
+/// workspace's `blackbird` row.
 pub fn find_vd_checkout(env_value: Option<&str>, cwd: &Path) -> Result<PathBuf, Error> {
     if let Some(v) = env_value.filter(|v| !v.is_empty()) {
         let p = PathBuf::from(v);
-        let p = if p.is_relative() { cwd.join(p) } else { p };
+        let p = if p.is_relative() { cwd.join(p) } else { p }.join(VD_ROOT.1);
         return if is_vd_checkout(&p) {
             Ok(p.canonicalize().unwrap_or(p))
         } else {
             Err(Error::new(
                 &codes::WORKSPACE_NOT_FOUND,
-                format!("{VD_DIR_VAR}={v} is not a virtual-devices checkout (no bin/odap-vdev)"),
+                format!("{VD_DIR_VAR}={v} has no emulator (no emulator/bin/odap-vdev)"),
             )
             .hint(format!(
-                "Point {VD_DIR_VAR} at the virtual-devices repository, or unset it."
+                "Point {VD_DIR_VAR} at the blackbird repository, or unset it."
             )))
         };
     }
@@ -43,18 +41,16 @@ pub fn find_vd_checkout(env_value: Option<&str>, cwd: &Path) -> Result<PathBuf, 
         let Ok(tsv) = std::fs::read_to_string(dir.join("repos.tsv")) else {
             continue;
         };
-        let row = |name: &str| {
-            tsv.lines().skip(1).find_map(|line| {
-                let (path, slug) = line.split_once('\t')?;
-                (slug.trim().rsplit('/').next() == Some(name)).then(|| dir.join(path))
-            })
-        };
-        let found = row(VD_REPO).or_else(|| row(VD_ROOT.0).map(|p| p.join(VD_ROOT.1)));
+        let found = tsv.lines().skip(1).find_map(|line| {
+            let (path, slug) = line.split_once('\t')?;
+            (slug.trim().rsplit('/').next() == Some(VD_ROOT.0))
+                .then(|| dir.join(path).join(VD_ROOT.1))
+        });
         return match found {
             Some(p) if is_vd_checkout(&p) => Ok(p.canonicalize().unwrap_or(p)),
             _ => Err(Error::new(
                 &codes::WORKSPACE_NOT_FOUND,
-                format!("{VD_REPO} is not checked out in {}", dir.display()),
+                format!("{} is not checked out in {}", VD_ROOT.0, dir.display()),
             )
             .fix("scripts/bootstrap.sh")),
         };
@@ -84,18 +80,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn finds_the_checkout_through_repos_tsv() {
+    fn ignores_the_old_virtual_devices_row_and_takes_the_variable_s_emulator() {
         let root = std::env::temp_dir().join(format!("opendap-ws-{}", std::process::id()));
         std::fs::create_dir_all(root.join("public/virtual-devices/bin")).unwrap();
+        std::fs::create_dir_all(root.join("elsewhere/emulator/bin")).unwrap();
         std::fs::create_dir_all(root.join("public/cli/x")).unwrap();
         std::fs::write(root.join("public/virtual-devices/bin/odap-vdev"), "").unwrap();
+        std::fs::write(root.join("elsewhere/emulator/bin/odap-vdev"), "").unwrap();
         std::fs::write(
             root.join("repos.tsv"),
             "path\trepository\npublic/virtual-devices\topendap-project/virtual-devices\n",
         )
         .unwrap();
-        let found = find_vd_checkout(None, &root.join("public/cli/x")).unwrap();
-        assert!(found.ends_with("public/virtual-devices"));
+        assert!(find_vd_checkout(None, &root.join("public/cli/x")).is_err());
+        let via_var = root.join("elsewhere");
+        let found = find_vd_checkout(via_var.to_str(), &root).unwrap();
+        assert!(found.ends_with("elsewhere/emulator"));
         assert!(find_vd_checkout(Some("/nonexistent"), &root).is_err());
         let _ = std::fs::remove_dir_all(&root);
     }

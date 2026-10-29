@@ -41,7 +41,7 @@ pub fn tail(path: &Path, lines: usize) -> String {
     all[all.len().saturating_sub(lines)..].join("\n")
 }
 
-/// Finds the virtual-devices checkout from `$ODAP_VIRTUAL_DEVICES_DIR` or the workspace.
+/// Finds the emulator: the `emulator/` folder of `$ODAP_BLACKBIRD_DIR` or of the workspace's blackbird row.
 #[derive(Debug, Default, Clone, Copy)]
 pub struct LocalVms;
 
@@ -205,12 +205,15 @@ impl VirtualDevice {
         a.iter().map(|s| s.to_string()).collect()
     }
 
-    /// `odap-vdev hw --json` (`opendap.vdev-hardware/v1`) as the model has it.
+    /// `odap-vdev hw --json` (`blackbird.emulator-hardware/v1`; `opendap.vdev-hardware/v1` from an
+    /// emulator before the rename, accepted for one minor release) as the model has it.
     fn parse_hardware(target: &Transport, v: &Value) -> Result<HardwareState, Error> {
-        if v["schema"] != "opendap.vdev-hardware/v1" {
+        if v["schema"] != "blackbird.emulator-hardware/v1"
+            && v["schema"] != "opendap.vdev-hardware/v1"
+        {
             return Err(Error::new(
                 &codes::TRANSPORT_QMP_FAILED,
-                "odap-vdev hw: not an opendap.vdev-hardware/v1 document",
+                "odap-vdev hw: not a blackbird.emulator-hardware/v1 document",
             ));
         }
         let usb: Vec<&str> = v["usb"]
@@ -523,7 +526,7 @@ mod tests {
         let tool = p.join("bin/odap-vdev");
         std::fs::write(
             &tool,
-            "#!/bin/sh\n[ \"$1 $2\" = \"status --json\" ] && echo '{\"state\":\"stopped\",\"pid\":null,\"endpoints\":{\"ssh\":\"127.0.0.1:2299\",\"vnc\":\"127.0.0.1:5999\",\"qmp\":\"/tmp/none.sock\"},\"image\":{\"path\":\"/nonexistent.raw\",\"present\":false},\"dev_key\":\"/nonexistent/key\",\"console_log\":\"/tmp/none.log\",\"qemu_log\":\"/tmp/none.log\"}'\n[ \"$1 $2\" = \"hw --json\" ] && echo '{\"schema\":\"opendap.vdev-hardware/v1\",\"sd\":true,\"usb\":[\"usbaudio\",\"other\"],\"charger\":false,\"battery\":64}'\nexit 0\n",
+            "#!/bin/sh\n[ \"$1 $2\" = \"status --json\" ] && echo '{\"state\":\"stopped\",\"pid\":null,\"endpoints\":{\"ssh\":\"127.0.0.1:2299\",\"vnc\":\"127.0.0.1:5999\",\"qmp\":\"/tmp/none.sock\"},\"image\":{\"path\":\"/nonexistent.raw\",\"present\":false},\"dev_key\":\"/nonexistent/key\",\"console_log\":\"/tmp/none.log\",\"qemu_log\":\"/tmp/none.log\"}'\n[ \"$1 $2\" = \"hw --json\" ] && echo '{\"schema\":\"blackbird.emulator-hardware/v1\",\"sd\":true,\"usb\":[\"usbaudio\",\"other\"],\"charger\":false,\"battery\":64}'\nexit 0\n",
         )
         .unwrap();
         std::fs::set_permissions(&tool, std::fs::Permissions::from_mode(0o755)).unwrap();

@@ -83,7 +83,7 @@ codes! {
         "Retry `opendap vm stop`.");
     WORKSPACE_NOT_FOUND = ("workspace.not_found", exit::PRECONDITION, false,
         "The virtual-devices checkout that runs virtual devices was not found.",
-        "Run from inside the OpenDAP workspace, or set ODAP_VIRTUAL_DEVICES_DIR to the virtual-devices checkout.");
+        "Run from inside the OpenDAP workspace, or set ODAP_BLACKBIRD_DIR to the blackbird checkout.");
     HOST_TOOL_MISSING = ("host.tool_missing", exit::PRECONDITION, false,
         "A host program the command needs is not installed.",
         "Run `opendap doctor` for the missing tool and how to install it.");
